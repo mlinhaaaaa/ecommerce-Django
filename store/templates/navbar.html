@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dancing Script">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="{%url "home"%}" style="font-family: Dancing Script;  font-weight: bold; font-size: 40px">TruyenHay</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{%url "home"%}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{%url "search"%}">Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{%url "about"%}">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a class="dropdown-item" href="{% url 'home' %}">All Products</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'category' 'tutien' %}">Chuyển Sinh</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'category' 'xuyenkhong' %}">Xuyên Không</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'category' 'hocduong' %}">Học Đường</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <a href="{%url "cart_summary"%}" class="btn btn-outline-dark">
+              <i class="bi-cart-fill me-1"></i>
+              Cart
+              <span class="badge bg-danger text-white ms-1 rounded-pill" id="cart_quantity">{{cart|length}}</span>
+          </a>
+
+        </form>
+        &nbsp;
+        <div class="consetetur-fluid d-flex">
+          {% if user.is_authenticated %}
+            <div class="dropdown " style="margin-left: 10px;">
+              <a class="bi bi-person-circle nav-link" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 35px;"></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{%url "update_user"%}" style="text-decoration: none; color: black;">Profile</a></li>
+                <li><a class="dropdown-item" href="{%url "update_info"%}" style="text-decoration: none; color: black;">Information</a></li>
+                <li><a class="dropdown-item" href="{%url "update_password"%}" style="text-decoration: none; color: black;">Change Password</a></li>
+                <li><a class="dropdown-item" href="{%url "logout"%}" style="text-decoration: none; color: black;">Logout</a></li>
+              </ul>
+            </div>
+          {% else %}
+            <form class="d-flex">
+              &nbsp;
+              <a class="btn btn-outline-dark" href="{%url "login"%}">Login</a>
+            </form>
+            <form class="d-flex">
+              &nbsp;
+              <a class="btn btn-outline-dark" href="{%url "register"%}">Register</a>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Header -->
+<div class="card text-bg-dark">
+    <img  style="height: 510px;" src="https://wallpaper.news/images/2022-03-01/medium/1920x1080-wallpaper-4k/1920x1080-wallpaper-4k-11.jpg" class="card-img" alt="...">
+    <div class="card-img-overlay">
+        <h1 style="text-align: center; font-size: 150px; font-family: Dancing Script;  font-weight: bold;" class="card-title mt-5">Search</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-10">
+                <div class="card">
+                    <div class="card-header">
+                        Search Products
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action ="{%url "search"%}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <input type="text" class="form-control" placeholder="Search for products..." name = "searched" required>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </center>
+    </div>
+</div>
+<section class="py-5" style="background-color: #e0e0e0">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% if searched %}
+            {% for product in searched %}
+
+            {% if product.is_sale %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Sale badge-->
+                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <!-- Product image-->
+                    <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{ product.name }}</h5>
+                            <a href="" style = "text-decoration: none;">{{ product.category }}</a>                   
+                            <hr>
+                            <!-- Product price-->
+                            <span class="text-muted text-decoration-line-through">${{ product.price }}</span>&nbsp;
+                            ${{ product.sale_price }}
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{%url "product" product.id%}">View game</a></div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image -->
+                    <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                    <!-- Product details -->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name -->
+                            <h5 class="fw-bolder">{{ product.name }}</h5>
+                            <!-- Product price -->
+                            <a href="" style = "text-decoration: none;">{{ product.category }}</a>                   
+                            <hr>
+                            ${{ product.price }}
+                        </div>
+                    </div>
+                    <!-- Product actions -->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="{%url "product" product.id%}">View game</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif%}
+            {% endfor %}
+            <br>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock  %}

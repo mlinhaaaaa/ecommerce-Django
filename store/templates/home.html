@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+  <!-- Header -->
+  <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item" data-bs-interval="5000" style="height: 510px">
+            <img src="https://image.voh.com.vn/voh/thumbnail/2023/07/28/truyenkiemhiephaynhat-compressed.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item active" data-bs-interval="5000" style="height: 510px;">
+            <img src="https://image.voh.com.vn/voh/Image/2023/06/07/15.jpg?t=o" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="5000" style="height: 510px">
+            <img src="https://image.voh.com.vn/voh/thumbnail/2023/07/11/bia-ctruyen-huyen-huyen-di-gioi-10-7-2023-1.jpg" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <!-- Section -->
+  <style>
+    .card_hover{
+        transition: transform 0.3s ease;
+    }
+  
+    .card_hover:hover {
+        transform: scale(1.05);
+    }
+  </style>
+  <section class="py-5" style="background-color: #e0e0e0">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for product in products %}
+              {% if product.is_sale %}
+                <div class="col mb-5">
+                    <div class="card h-100 card_hover">
+                        <!-- Sale badge-->
+                        <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                        <!-- Product image-->
+                        <img style="height: 390px;" class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ product.name }}</h5>
+                                <a href="{% url 'category' product.category %}" style = "text-decoration: none;">{{ product.category }}</a>                   
+                                <hr>
+                                <!-- Product price-->
+                                <span class="text-muted text-decoration-line-through">${{ product.price }}</span>&nbsp;
+                                ${{ product.sale_price }}
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{%url "product" product.id%}">View</a></div>
+                        </div>
+                    </div>
+                </div>
+              {% else %}
+                <div class="col mb-5">
+                    <div class="card h-100 card_hover">
+                        <!-- Product image -->
+                        <img style="height: 390px;" class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                        <!-- Product details -->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name -->
+                                <h5 class="fw-bolder">{{ product.name }}</h5>
+                                <!-- Product price -->
+                                <a href="{% url 'category' product.category %}" style = "text-decoration: none;">{{ product.category }}</a>                   
+                                <hr>
+                                ${{ product.price }}
+                            </div>
+                        </div>
+                        <!-- Product actions -->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" href="{%url "product" product.id%}">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              {% endif%}
+            {% endfor %}
+        </div>
+    </div>
+  </section>
+{% endblock  %}

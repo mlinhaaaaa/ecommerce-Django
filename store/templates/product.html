@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="contact-title mb-2" style="font-style: italic; font-size: 17px; ">
+            <div class="contact-fix">
+                <span><a href="{%url "home"%}" style="color: #bdbdbd; text-decoration: none;">Home</a></span>
+                <span style="color: #616161;">/ {{ product.name }}</span>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="..." style="width: 80%;">
+                </div>
+                <div class="col-md-8 ">
+                    <div class="card-body">
+                        <h2 class="card-title">{{product.name}}</h2>
+                        <div class="container d-flex">
+                            <p class="card-text">Tag: </p>
+                            &nbsp;
+                            <a href="{% url 'category' product.category %}" ><p class="btn btn-secondary" style="font-size: 10px">{{product.category}}</p></a>
+
+                        </div>              
+                        <hr>      
+                        <p class="card-text">{{product.description}}</p>
+                        <div class="container">
+                            Price:
+                            {% if product.is_sale %}
+                            <span class="text-muted text-decoration-line-through">${{ product.price }}</span>&nbsp; &nbsp;
+                            ${{ product.sale_price }}
+                            {% else %}
+                            ${{ product.price }}
+                            {% endif %}
+                            <div class="row mt-2">
+                                <div class="col-md-2">Quantity:</div>
+                                <div class="col-md-2">                                   
+                                    <select class="form-select form-select-sm" id="qty-cart">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary mt-2" value="{{product.id}}" id="add-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        $(document).on('click', '#add-cart', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cart_add' %}",
+                data: {
+                    product_id: $('#add-cart').val(),
+                    product_qty: $('#qty-cart option:selected').text(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function (json) {
+                    document.getElementById("cart_quantity").textContent = json.qty; // Fixed setting textContent
+                    console.log(json);
+                    location.reload();
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log(errmsg);
+                }
+            });
+        });
+    </script>
+{% endblock %}
